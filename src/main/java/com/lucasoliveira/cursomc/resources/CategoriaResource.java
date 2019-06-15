@@ -20,10 +20,8 @@ public class CategoriaResource {
     //Método "find" para buscar uma categoria
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable Integer id){
+
         Categoria categoria = categoriaService.buscar(id);
         return ResponseEntity.ok().body(categoria);
     }
-
-
-
 }
