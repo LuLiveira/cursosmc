@@ -1,5 +1,7 @@
 package com.lucasoliveira.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -18,9 +20,11 @@ public class Endereco implements Serializable {
     private String bairro;
     private String cep;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
     @ManyToOne
     @JoinColumn(name = "cidade_id")
     private Cidade cidade;
@@ -28,7 +32,8 @@ public class Endereco implements Serializable {
     public Endereco() {
     }
 
-    public Endereco(String longradouro, String numero, String complemento, String bairro, String cep, Cliente cliente, Cidade cidade) {
+    public Endereco(Integer id, String longradouro, String numero, String complemento, String bairro, String cep, Cliente cliente, Cidade cidade) {
+        this.id = id;
         this.longradouro = longradouro;
         this.numero = numero;
         this.complemento = complemento;
