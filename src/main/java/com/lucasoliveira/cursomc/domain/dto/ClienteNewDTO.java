@@ -1,5 +1,8 @@
 package com.lucasoliveira.cursomc.domain.dto;
 
+import com.lucasoliveira.cursomc.services.validation.ClienteInsert;
+
+@ClienteInsert
 public class ClienteNewDTO {
 
     private String nome;
