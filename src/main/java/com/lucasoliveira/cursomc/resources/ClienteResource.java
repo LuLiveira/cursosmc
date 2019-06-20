@@ -2,6 +2,7 @@ package com.lucasoliveira.cursomc.resources;
 
 import com.lucasoliveira.cursomc.domain.Cliente;
 import com.lucasoliveira.cursomc.domain.dto.ClienteDTO;
+import com.lucasoliveira.cursomc.domain.dto.ClienteNewDTO;
 import com.lucasoliveira.cursomc.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,8 +30,8 @@ public class ClienteResource {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO clienteDTO){
-        Cliente cliente= clienteService.fromDTO(clienteDTO);
+    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO clienteNewDTO){
+        Cliente cliente = clienteService.fromDTO(clienteNewDTO);
         cliente = clienteService.insert(cliente);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(cliente.getId()).toUri();

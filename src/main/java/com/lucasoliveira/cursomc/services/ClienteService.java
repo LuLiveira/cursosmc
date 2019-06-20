@@ -1,8 +1,13 @@
 package com.lucasoliveira.cursomc.services;
 
+import com.lucasoliveira.cursomc.domain.Cidade;
 import com.lucasoliveira.cursomc.domain.Cliente;
+import com.lucasoliveira.cursomc.domain.Endereco;
 import com.lucasoliveira.cursomc.domain.dto.ClienteDTO;
+import com.lucasoliveira.cursomc.domain.dto.ClienteNewDTO;
+import com.lucasoliveira.cursomc.domain.enums.TipoCliente;
 import com.lucasoliveira.cursomc.repositories.ClienteRepository;
+import com.lucasoliveira.cursomc.repositories.EnderecoRepository;
 import com.lucasoliveira.cursomc.services.exception.DataIntegrityException;
 import com.lucasoliveira.cursomc.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +25,9 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
     public Cliente find(Integer id){
 
@@ -30,9 +39,12 @@ public class ClienteService {
         return cliente;
     }
 
+    @Transactional
     public Cliente insert (Cliente cliente){
-
-        return clienteRepository.save(cliente);
+        cliente.setId(null);
+        clienteRepository.save(cliente);
+        enderecoRepository.save(cliente.getEnderecos());
+        return cliente;
     }
 
     public Cliente update(Cliente cliente){
@@ -60,6 +72,23 @@ public class ClienteService {
         return clienteRepository.findAll(pageRequest);
     }
 
+    public Cliente fromDTO(ClienteNewDTO clienteNewDTO) {
+        Cliente cliente = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(), clienteNewDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewDTO.getTipoCliente()));
+        Cidade cidade = new Cidade(clienteNewDTO.getCidadeId(), null, null);
+        Endereco endereco = new Endereco(null, clienteNewDTO.getLongradouro(), clienteNewDTO.getNumero(), clienteNewDTO.getComplemento(), clienteNewDTO.getBairro(), clienteNewDTO.getCep(), cliente, cidade);
+        cliente.getEnderecos().add(endereco);
+        cliente.getTelefones().add(clienteNewDTO.getTelefone1());
+
+        if(clienteNewDTO.getTelefone2() != null){
+            cliente.getTelefones().add(clienteNewDTO.getTelefone2());
+        }
+        if(clienteNewDTO.getTelefone3() != null){
+            cliente.getTelefones().add(clienteNewDTO.getTelefone3());
+        }
+
+        return cliente;
+    }
+
     public Cliente fromDTO(ClienteDTO clienteDTO){
         return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null);
     }
@@ -68,4 +97,6 @@ public class ClienteService {
         newCliente.setNome(cliente.getNome());
         newCliente.setEmail(cliente.getEmail());
     }
+
+
 }
