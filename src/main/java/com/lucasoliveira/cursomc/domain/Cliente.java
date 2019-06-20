@@ -20,7 +20,8 @@ public class Cliente implements Serializable {
     private String cpfOuCnpj;
     private Integer tipoCliente;
 
-    @OneToMany(mappedBy = "cliente")
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
     //Set não aceita repetição sendo assim ao usar um Set eu estou garantindo que não haverá repetição
