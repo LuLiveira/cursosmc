@@ -1,8 +1,6 @@
 package com.lucasoliveira.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lucasoliveira.cursomc.domain.enums.TipoCliente;
 
 import javax.persistence.*;
@@ -38,12 +36,19 @@ public class Cliente implements Serializable {
     public Cliente() {
     }
 
-    public Cliente(String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente) {
+    public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente) {
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.cpfOuCnpj = cpfOuCnpj;
-        this.tipoCliente = tipoCliente.getCod();
+        this.tipoCliente = (tipoCliente == null) ? null : tipoCliente.getCod();
     }
+
+   /*public Cliente(Integer id, String nome, String email) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+    }*/
 
     public Integer getId() {
         return id;

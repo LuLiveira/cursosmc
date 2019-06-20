@@ -22,7 +22,7 @@ public class CategoriaResource {
     @Autowired
     private CategoriaService categoriaService;
 
-    //Método "find" para buscar uma categoria
+    //Método "find" para find uma categoria
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable Integer id){
 
@@ -31,7 +31,7 @@ public class CategoriaResource {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insert (@Valid @RequestBody CategoriaDTO categoriaDTO){
+    public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO categoriaDTO){
         Categoria categoria = categoriaService.fromDTO(categoriaDTO);
         categoria = categoriaService.insert(categoria);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
