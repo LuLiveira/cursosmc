@@ -1,6 +1,5 @@
 package com.lucasoliveira.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucasoliveira.cursomc.domain.enums.EstadoPagamento;
 
@@ -28,7 +27,8 @@ public abstract class Pagamento implements Serializable {
     public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido) {
         super();
         this.id = id;
-        this.estadoPagamento = estado.getCod();
+                              //se estadoPagamento == null então estadoPagamento recebe null senão estadoPagamento recebe estado.getCod();
+        this.estadoPagamento = (estadoPagamento == null) ? null : estado.getCod();
         this.pedido = pedido;
     }
 

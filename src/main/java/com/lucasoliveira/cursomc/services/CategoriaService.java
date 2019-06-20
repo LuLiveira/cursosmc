@@ -20,7 +20,7 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    public Categoria buscar(Integer id){
+    public Categoria find(Integer id){
 
         Categoria categoria = categoriaRepository.findOne(id);
         if(categoria == null){
@@ -36,7 +36,10 @@ public class CategoriaService {
 
     public Categoria update(Categoria categoria){
 
-        return categoriaRepository.save(categoria);
+        Categoria newCategoria = find(categoria.getId());
+        updateData(newCategoria, categoria);
+
+        return categoriaRepository.save(newCategoria);
     }
 
     public void delete (Integer id){
@@ -58,5 +61,9 @@ public class CategoriaService {
 
     public Categoria fromDTO(CategoriaDTO categoriaDTO){
         return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
+    }
+
+    private void updateData(Categoria newCategoria, Categoria categoria){
+        newCategoria.setNome(categoria.getNome());
     }
 }
