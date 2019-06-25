@@ -1,8 +1,5 @@
 package com.lucasoliveira.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,7 +21,8 @@ public class Estado implements Serializable {
 
     public Estado(){}
 
-    public Estado(String nome) {
+    public Estado(Integer id, String nome) {
+        this.id = id;
         this.nome = nome;
     }
 
@@ -44,11 +42,11 @@ public class Estado implements Serializable {
         this.nome = nome;
     }
 
-    public List<Cidade> getCidade() {
+    public List<Cidade> getCidades() {
         return cidades;
     }
 
-    public void setCidade(List<Cidade> cidades) {
+    public void setCidades(List<Cidade> cidades) {
         this.cidades = cidades;
     }
 
