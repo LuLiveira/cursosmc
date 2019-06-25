@@ -1,7 +1,6 @@
 package com.lucasoliveira.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -43,6 +42,14 @@ public class Pedido implements Serializable {
         this.instante = instante;
         this.enderecoDeEntrega = enderecoDeEntrega;
         this.cliente = cliente;
+    }
+
+    public double getTotalPedido(){
+        double total = 0.0;
+        for (ItemPedido itemPedido : itens) {
+            total += itemPedido.getSubTotal();
+        }
+        return total;
     }
 
     public Integer getId() {
