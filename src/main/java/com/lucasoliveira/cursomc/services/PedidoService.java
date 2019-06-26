@@ -5,10 +5,7 @@ import com.lucasoliveira.cursomc.domain.ItemPedido;
 import com.lucasoliveira.cursomc.domain.PagamentoComBoleto;
 import com.lucasoliveira.cursomc.domain.Pedido;
 import com.lucasoliveira.cursomc.domain.enums.EstadoPagamento;
-import com.lucasoliveira.cursomc.repositories.ItemPedidoRepository;
-import com.lucasoliveira.cursomc.repositories.PagamentoRepository;
-import com.lucasoliveira.cursomc.repositories.PedidoRepository;
-import com.lucasoliveira.cursomc.repositories.ProdutoRepository;
+import com.lucasoliveira.cursomc.repositories.*;
 import com.lucasoliveira.cursomc.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +30,9 @@ public class PedidoService {
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
 
+    @Autowired
+    private ClienteRepository clienteRepository;
+
     public Pedido find(Integer id){
 
         Pedido pedido = pedidoRepository.findOne(id);
@@ -45,6 +45,7 @@ public class PedidoService {
     public Pedido insert(Pedido pedido){
         //pedido.setId(null);
         pedido.setInstante(new Date());
+        pedido.setCliente(clienteRepository.findOne(pedido.getCliente().getId()));
         pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
         pedido.getPagamento().setPedido(pedido);
         if(pedido.getPagamento() instanceof PagamentoComBoleto){
@@ -57,10 +58,12 @@ public class PedidoService {
 
         for(ItemPedido itemPedido : pedido.getItens()){
             itemPedido.setDesconto(0.0);
-            itemPedido.setPreco(produtoRepository.findOne(itemPedido.getProduto().getId()).getPreco());
+            itemPedido.setProduto(produtoRepository.findOne(itemPedido.getProduto().getId()));
+            itemPedido.setPreco(itemPedido.getProduto().getPreco());
             itemPedido.setPedido(pedido);
         }
         itemPedidoRepository.save(pedido.getItens());
+        System.out.println(pedido);
 
         return pedido;
     }
