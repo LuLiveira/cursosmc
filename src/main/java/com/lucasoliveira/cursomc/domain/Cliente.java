@@ -1,11 +1,13 @@
 package com.lucasoliveira.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lucasoliveira.cursomc.domain.enums.Perfil;
 import com.lucasoliveira.cursomc.domain.enums.TipoCliente;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Cliente implements Serializable {
@@ -36,7 +38,12 @@ public class Cliente implements Serializable {
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "PERFIS")
+    private Set<Integer> perfis = new HashSet<>();
+
     public Cliente() {
+        addPerfil(Perfil.CLIENTE);
     }
 
     public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente, String senha) {
@@ -47,6 +54,7 @@ public class Cliente implements Serializable {
         //Ajuste para o TipoCliente aceitar valor nullo caso receba null
         this.tipoCliente = (tipoCliente == null) ? null : tipoCliente.getCod();
         this.senha = senha;
+        addPerfil(Perfil.CLIENTE);
     }
 
    /*public Cliente(Integer id, String nome, String email) {
@@ -125,6 +133,14 @@ public class Cliente implements Serializable {
 
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
+    }
+
+    public Set<Perfil> getPerfis(){
+        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addPerfil(Perfil perfil){
+        perfis.add(perfil.getCod());
     }
 
     @Override
