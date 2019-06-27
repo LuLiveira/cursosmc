@@ -1,21 +1,36 @@
 package com.lucasoliveira.cursomc.domain.dto;
 
 import com.lucasoliveira.cursomc.services.validation.ClienteInsert;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @ClienteInsert
 public class ClienteNewDTO {
 
+    @NotEmpty(message = "Preenchimento obrigatório")
+    @Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
     private String nome;
+    @NotEmpty(message = "Preenchimento obrigatório")
+    @Email(message = "Email inválido")
     private String email;
+    @NotEmpty(message = "Preenchimento obrigatório")
     private String cpfOuCnpj;
     private Integer tipoCliente;
 
+    @NotEmpty(message = "Preenchimento obrigatório")
+    private String senha;
+
+    @NotEmpty(message = "Preenchimento obrigatório")
     private String longradouro;
+    @NotEmpty(message = "Preenchimento obrigatório")
     private String numero;
     private String complemento;
     private String bairro;
+    @NotEmpty(message = "Preenchimento obrigatório")
     private String cep;
 
+    @NotEmpty(message = "Preenchimento obrigatório")
     private String telefone1;
     private String telefone2;
     private String telefone3;
@@ -127,5 +142,13 @@ public class ClienteNewDTO {
 
     public void setCidadeId(Integer cidadeId) {
         this.cidadeId = cidadeId;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }
