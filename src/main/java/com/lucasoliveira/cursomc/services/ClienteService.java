@@ -5,9 +5,12 @@ import com.lucasoliveira.cursomc.domain.Cliente;
 import com.lucasoliveira.cursomc.domain.Endereco;
 import com.lucasoliveira.cursomc.domain.dto.ClienteDTO;
 import com.lucasoliveira.cursomc.domain.dto.ClienteNewDTO;
+import com.lucasoliveira.cursomc.domain.enums.Perfil;
 import com.lucasoliveira.cursomc.domain.enums.TipoCliente;
 import com.lucasoliveira.cursomc.repositories.ClienteRepository;
 import com.lucasoliveira.cursomc.repositories.EnderecoRepository;
+import com.lucasoliveira.cursomc.security.UserSpringSecurity;
+import com.lucasoliveira.cursomc.services.exception.AuthorizationException;
 import com.lucasoliveira.cursomc.services.exception.DataIntegrityException;
 import com.lucasoliveira.cursomc.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,12 @@ public class ClienteService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Cliente find(Integer id){
+
+        UserSpringSecurity user = UserService.authenticated();
+
+        if(user == null || !user.hasHole(Perfil.ADMIN) && !id.equals(user.getId())){
+            throw new AuthorizationException("Acesso negado");
+        }
 
         Cliente cliente = clienteRepository.findOne(id);
         if(cliente == null){
