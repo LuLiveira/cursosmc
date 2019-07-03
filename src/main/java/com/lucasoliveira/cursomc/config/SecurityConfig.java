@@ -21,7 +21,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-
+/**
+ * Lucas Oliveira - 27-06-2019
+ * Arquivo de configuração de segurança dos endpoins
+ * */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -46,7 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private static final String[] PUBLIC_MATCHER_POST = {
-            "/clientes/**",
+            "/clientes",
+            "/clientes/picture",
             "/auth/forgot/**"
     };
 

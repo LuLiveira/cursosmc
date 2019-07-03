@@ -9,6 +9,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Lucas Oliveira - 27-06-2019
+ * Arquivo de configuração do Amazon s3
+ */
+
 @Configuration
 public class S3Config {
 
@@ -26,7 +31,6 @@ public class S3Config {
         BasicAWSCredentials awsCred = new BasicAWSCredentials(awsId, awsKey);
         AmazonS3 s3client = AmazonS3ClientBuilder.standard().withRegion(Regions.fromName(region))
                 .withCredentials(new AWSStaticCredentialsProvider(awsCred)).build();
-
         return s3client;
     }
 }
